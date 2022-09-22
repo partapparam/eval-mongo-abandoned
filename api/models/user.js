@@ -1,35 +1,41 @@
 const mongoose = require("mongoose")
-const { Schema } = mongoose
 
-// const usersSchema = new mongoose.Schema(
-//   {
-//     username: String,
-//     name: {
-//       first: String,
-//       last: String,
-//     },
-//   },
-//   { strict: false }
-// )
+/**
+ * toJSON Transform function will allow us to edit the JSON object that is sent back, removing fields and changing the _id to id
+ */
 
-const personSchema = new Schema(
+const usersSchema = new mongoose.Schema(
   {
-    name: String,
-    age: Number,
-    stories: [{ type: Schema.Types.ObjectId, ref: "Story" }],
+    username: { type: String, required: true, message: "Username is required" },
+    name: {
+      first: { type: String, required: true },
+      last: { type: String, required: true },
+    },
+    email: { type: String, required: true },
+    passwordHash: { type: String, required: true },
+    image: String,
+    jobTitle: String,
   },
-  { timestamps: true }
-)
-
-const storySchema = new Schema(
   {
-    author: { type: Schema.Types.ObjectId, ref: "Person" },
-    title: String,
-    fans: [{ type: Schema.Types.ObjectId, ref: "Person" }],
-  },
-  { timestamps: true }
+    timestamps: true,
+    toJSON: {
+      transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString()
+        delete returnedObject._id
+        delete returnedObject.__v
+        delete returnedObject.passwordHash
+      },
+    },
+  }
 )
+/**
+ * Validates unique email
+ */
+usersSchema.path("email").validate(async (email) => {
+  const emailCount = await mongoose.models.users.countDocuments({ email })
+  return !emailCount
+}, "Email already exists")
 
-const Story = mongoose.model("Story", storySchema)
-const Person = mongoose.model("Person", personSchema)
-module.exports = { Story, Person }
+const User = mongoose.model("User", usersSchema)
+
+module.exports = User

@@ -1,6 +1,4 @@
 const mongoose = require("mongoose")
-// const User = require("./models/user")
-const mo = require("./models/user")
 
 // If there is not connection string, this will exit as error
 if (!process.env.MONGO_DB) {
