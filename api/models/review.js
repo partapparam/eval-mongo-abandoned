@@ -43,13 +43,17 @@ const reviewsSchema = new Schema(
       message: "Expectations rating is required",
     },
     visitType: String,
-    address: {
-      type: Schema.Types.ObjectId,
-      ref: "Address",
-    },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
+    },
+    resident: {
+      type: Schema.Types.ObjectId,
+      ref: "Resident",
+    },
+    address: {
+      type: Schema.Types.ObjectId,
+      ref: "Address",
     },
   },
   {

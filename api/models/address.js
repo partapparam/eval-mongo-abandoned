@@ -23,6 +23,12 @@ const addressesSchema = new mongoose.Schema(
         ref: "Resident",
       },
     ],
+    // reviews: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Review",
+    //   },
+    // ],
   },
   {
     timestamps: true,

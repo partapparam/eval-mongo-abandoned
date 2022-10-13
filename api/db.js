@@ -17,36 +17,36 @@ db.once("open", () => {
   console.log("Mongo DB is open")
 })
 
-const author = new mo.Person({
-  // the ID field must be created here
-  // _id: new mongoose.Types.ObjectId(),
-  name: "Ian Fleming",
-  age: 50,
-})
+// const author = new mo.Person({
+//   // the ID field must be created here
+//   // _id: new mongoose.Types.ObjectId(),
+//   name: "Ian Fleming",
+//   age: 50,
+// })
 
-author.save(function (err) {
-  if (err) return console.log(err)
-  // console.log(author)
+// author.save(function (err) {
+//   if (err) return console.log(err)
+//   // console.log(author)
 
-  const story1 = new mo.Story({
-    title: "Casino Royale",
-    author: author._id, // assign the _id from the person
-  })
-  // console.log(story1)
+//   const story1 = new mo.Story({
+//     title: "Casino Royale",
+//     author: author._id, // assign the _id from the person
+//   })
+//   // console.log(story1)
 
-  story1.save(function (err) {
-    if (err) return console.log(err)
-    // that's it!
-  })
-})
+//   story1.save(function (err) {
+//     if (err) return console.log(err)
+//     // that's it!
+//   })
+// })
 
-mo.Story.findOne({ title: "Casino Royale" })
-  .populate("author", "name")
-  .exec(function (err, story) {
-    if (err) return console.log(err)
-    console.log("The author is %s", story)
-    // prints "The author is Ian Fleming"
-  })
+// mo.Story.findOne({ title: "Casino Royale" })
+//   .populate("author", "name")
+//   .exec(function (err, story) {
+//     if (err) return console.log(err)
+//     console.log("The author is %s", story)
+//     // prints "The author is Ian Fleming"
+//   })
 
 // mo.Story.findOne({ title: "Casino Royale" }, function (error, story) {
 //   if (error) {
