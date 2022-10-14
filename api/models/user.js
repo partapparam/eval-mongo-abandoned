@@ -8,11 +8,19 @@ const usersSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, message: "Username is required" },
     name: {
-      first: { type: String, required: true },
-      last: { type: String, required: true },
+      first: {
+        type: String,
+        required: true,
+        message: "first name is required",
+      },
+      last: { type: String, required: true, message: "last name is required" },
     },
-    email: { type: String, required: true },
-    passwordHash: { type: String, required: true },
+    email: { type: String, required: true, message: "Email is required" },
+    passwordHash: {
+      type: String,
+      required: true,
+      message: "password is required",
+    },
     image: String,
     jobTitle: String,
   },
@@ -30,9 +38,12 @@ const usersSchema = new mongoose.Schema(
 )
 /**
  * Validates unique email
+ * TODO validate that it is an email as well
  */
 usersSchema.path("email").validate(async (email) => {
-  const emailCount = await mongoose.models.users.countDocuments({ email })
+  const emailCount = await User.countDocuments({
+    email: email,
+  })
   return !emailCount
 }, "Email already exists")
 

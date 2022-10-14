@@ -35,14 +35,16 @@ usersRouter.post("/new", async (req, res) => {
   const user = req.body
   const saltRounds = 10
   try {
-    const existingUser = await User.findOne(user.username)
+    const existingUser = await User.findOne({ username: user.username })
     // if the username already exists, return an error
     if (existingUser)
-      return res.json({ message: "error", data: "Username already exists" })
+      return res.json({ message: "Existing username", data: user })
     const passwordHash = await bcrypt.hash(user.password, saltRounds)
+    user.passwordHash = passwordHash
     const savedUser = await new User(user).save()
-    return res.json()
-  } catch {
+    return res.json({ message: "success", data: savedUser })
+  } catch (error) {
+    console.log(error._message)
     res.status(500).json({ message: "error", data: "Could not save user" })
   }
 })
