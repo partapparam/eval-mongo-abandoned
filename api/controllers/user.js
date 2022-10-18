@@ -1,7 +1,6 @@
 const User = require("../models/user")
 const usersRouter = require("express").Router()
 const bcrypt = require("bcrypt")
-const { update } = require("../models/resident")
 
 /**
  * get all users
@@ -31,23 +30,23 @@ usersRouter.get("/:id", async (req, res) => {
 })
 
 // Create new user
-usersRouter.post("/new", async (req, res) => {
-  const user = req.body
-  const saltRounds = 10
-  try {
-    const existingUser = await User.findOne({ username: user.username })
-    // if the username already exists, return an error
-    if (existingUser)
-      return res.json({ message: "Existing username", data: user })
-    const passwordHash = await bcrypt.hash(user.password, saltRounds)
-    user.passwordHash = passwordHash
-    const savedUser = await new User(user).save()
-    return res.json({ message: "success", data: savedUser })
-  } catch (error) {
-    console.log(error._message)
-    res.status(500).json({ message: "error", data: "Could not save user" })
-  }
-})
+// usersRouter.post("/new", async (req, res) => {
+//   const user = req.body
+//   const saltRounds = 10
+//   try {
+//     const existingUser = await User.findOne({ username: user.username })
+//     // if the username already exists, return an error
+//     if (existingUser)
+//       return res.json({ message: "Existing username", data: user })
+//     const passwordHash = await bcrypt.hash(user.password, saltRounds)
+//     user.passwordHash = passwordHash
+//     const savedUser = await new User(user).save()
+//     return res.json({ message: "success", data: savedUser })
+//   } catch (error) {
+//     console.log(error._message)
+//     res.status(500).json({ message: "error", data: "Could not save user" })
+//   }
+// })
 
 /**
  * Update User by Id
@@ -79,6 +78,20 @@ usersRouter.put("/update/:id", async (req, res) => {
     console.log(error)
 
     return res.status(500).json({ message: "error" })
+  }
+})
+
+/**
+ * Delete user by ID
+ */
+usersRouter.delete("/:id/", async (req, res) => {
+  const id = req.params.id
+  try {
+    const deletedUser = await User.findByIdAndDelete(id)
+    res.status(200).json({ message: "success", data: deletedUser })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ status: "error", message: error._message })
   }
 })
 

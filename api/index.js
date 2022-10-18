@@ -4,7 +4,6 @@ const port = process.env.port || 3000
 const morgan = require("morgan")
 const cors = require("cors")
 const req = require("express/lib/request")
-const userRouter = require("./controllers/user")
 require("dotenv").config()
 require("./db")
 // removes -x-powered-by response header
@@ -13,7 +12,10 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(morgan("tiny"))
+const authRouter = require("./controllers/auth")
+const userRouter = require("./controllers/user")
 
+app.use("/api/auth", authRouter)
 app.use("/api/users", userRouter)
 
 // this will only run if we are testing it. Check Package JSON file for testing script
