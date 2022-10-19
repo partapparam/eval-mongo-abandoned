@@ -38,7 +38,6 @@ const usersSchema = new mongoose.Schema(
 )
 /**
  * Validates unique email
- * TODO validate that it is an email as well
  */
 usersSchema.path("email").validate(async (email) => {
   const emailCount = await User.countDocuments({

@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken")
-const secretKey = process.env.JWT_SECRET_KEY
+const { secretKey } = require("../keyConfig")
 const authRouter = require("express").Router()
-const User = require("../models/user")
+const User = require("../models/User")
 const bcrypt = require("bcrypt")
-
 /**
  * Validates that a user exists
  */
@@ -53,17 +52,15 @@ authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body
   try {
     const user = await validate(email)
-    if (!user) {
-      throw new Error("Please enter correct Email")
-    }
+    // if No user, throw error
+    if (!user) throw new Error("Please enter correct Email")
     const result = await bcrypt.compare(password, user.passwordHash)
-    if (!result) {
-      throw new Error("Please enter correct Password.")
-    }
+    // if Password doesn't match, throw error
+    if (!result) throw new Error("Please enter correct Password.")
     const token = createToken(user)
     return res
       .status(200)
-      .json({ message: "success", data: token, expiresIn: 12000 })
+      .json({ message: "success", data: user, token: token, expiresIn: 12000 })
   } catch (error) {
     console.log(error.message)
     return res.status(400).json({ message: error.message })

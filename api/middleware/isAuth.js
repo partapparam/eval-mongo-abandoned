@@ -1,20 +1,24 @@
-const expressJwt = require("express-jwt")
-const publicKey = process.env.JWT_PUBLIC_KEY
+const { expressjwt: jwt } = require("express-jwt")
+const { publicKey } = require("../keyConfig")
 
-// We are assuming that the JWT will come in the header Authorization
+/**
+ * Gets Auth Bearer Token from the request
+ * Attaches it
+ */
 const getTokenFromHeader = (req) => {
   if (
     req.headers.authorization &&
     req.headers.authorization.split(" ")[0] === "Bearer"
   ) {
-    console.log("here we are")
+    console.log("THe token is here - isAuth.js")
     return req.headers.authorization.split(" ")[1]
   }
 }
 
-export default expressJwt({
-  secret: publicKey,
-  userProperty: "token", // this is where the next middleware can find the encoded data generated in services/auth:generateToken
+const checkIfAuth = jwt({
   algorithms: ["RS256"],
+  secret: publicKey,
   getToken: getTokenFromHeader,
 })
+
+module.exports = checkIfAuth
