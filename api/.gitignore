@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # ignore RS256 keys
-.key
-.pub
+*.key
+*.pub
