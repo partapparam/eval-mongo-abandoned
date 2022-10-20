@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const Resident = require("./resident")
+const { Schema } = mongoose
 
 /**
  * toJSON.tranform - perform a transformation of the resulting object based on some criteria, say to remove some sensitive information or return a custom object
@@ -13,22 +13,18 @@ const addressesSchema = new mongoose.Schema(
     zipcode: { type: Number, min: [5, "Zip code must be five digits"] },
     addressType: String,
     unitNumber: String,
-    currentResident: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Resident",
-    },
-    pastResidents: [
+    Residents: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Resident",
       },
     ],
-    // reviews: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Review",
-    //   },
-    // ],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
   },
   {
     timestamps: true,

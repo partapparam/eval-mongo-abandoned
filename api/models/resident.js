@@ -12,6 +12,7 @@ const residentsSchema = new mongoose.Schema(
       first: { type: String, required: true },
       last: { type: String, required: true },
     },
+    current: Boolean,
     address: [{ type: mongoose.Types.ObjectId, ref: "address" }],
   },
   {

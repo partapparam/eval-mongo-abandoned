@@ -55,6 +55,12 @@ const reviewsSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Address",
     },
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Like",
+      },
+    ],
   },
   {
     timestamps: true,

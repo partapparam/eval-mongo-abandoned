@@ -18,8 +18,10 @@ app.use(morgan("tiny"))
  */
 const authRouter = require("./controllers/auth")
 const userRouter = require("./controllers/user")
+const testRouter = require("./controllers/testController")
 app.use("/api/auth", authRouter)
 app.use("/api/users", checkIfAuth, userRouter)
+app.use("/api/test", testRouter)
 
 /**
  * Handles all failed routing that do not match or Auth is not met
