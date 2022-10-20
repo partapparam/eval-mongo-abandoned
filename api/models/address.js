@@ -13,18 +13,6 @@ const addressesSchema = new mongoose.Schema(
     zipcode: { type: Number, min: [5, "Zip code must be five digits"] },
     addressType: String,
     unitNumber: String,
-    Residents: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Resident",
-      },
-    ],
-    reviews: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
   },
   {
     timestamps: true,

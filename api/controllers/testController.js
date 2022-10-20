@@ -24,8 +24,14 @@ testRouter.post("/user/new", async (req, res) => {
 testRouter.get("/address/:id", async (req, res) => {
   const addressId = req.params.id
   try {
-    const address = await Address.findOne({ id: addressId })
-    return res.json({ data: address, message: "success" })
+    const address = await Review.find({ address: addressId })
+      .populate("user")
+      .populate("resident")
+      .populate("address")
+      .exec((err, reviews) => {
+        if (err) throw new Error("nothing found")
+        return res.json({ data: reviews, message: "success" })
+      })
   } catch (error) {
     return res.json({ message: "success", data: error })
   }
@@ -51,13 +57,36 @@ testRouter.get("/resident/:id", async (req, res) => {
     return res.json({ message: "error", data: error })
   }
 })
-
 testRouter.post("/resident/new", async (req, res) => {
   const newResident = req.body
   try {
     const savedResident = await new Resident(newResident).save()
     return res.json({ message: "success", data: savedResident })
-  } catch (error) {}
+  } catch (error) {
+    return res.json({ message: "error", data: error })
+  }
+})
+
+// Review
+testRouter.get("/review/:id", async (req, res) => {
+  const reviewId = req.params.id
+  try {
+    const review = await Review.findOne({ id: reviewId })
+
+    return res.json({ message: "success", data: review })
+  } catch (error) {
+    return res.json({ message: "error", data: error })
+  }
+})
+
+testRouter.post("/address/review/new", async (req, res) => {
+  const newReview = req.body
+  try {
+    const savedReview = await new Review(newReview).save()
+    return res.json({ message: "success", data: savedReview })
+  } catch (error) {
+    return res.json({ message: "error", data: error })
+  }
 })
 
 module.exports = testRouter

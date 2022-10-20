@@ -23,18 +23,6 @@ const usersSchema = new mongoose.Schema(
     },
     image: String,
     jobTitle: String,
-    reviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
-    likes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Like",
-      },
-    ],
   },
   {
     timestamps: true,
